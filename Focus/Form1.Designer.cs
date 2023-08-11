@@ -30,12 +30,17 @@
         {
             this.processList = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.SuspendLayout();
             // 
             // processList
             // 
+            this.processList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.processList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
             this.processList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.processList.FullRowSelect = true;
             this.processList.Location = new System.Drawing.Point(0, 0);
@@ -47,8 +52,18 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 130;
+            this.columnHeader1.Text = "PID";
+            this.columnHeader1.Width = 50;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "PNAME";
+            this.columnHeader2.Width = 100;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Window Title";
+            this.columnHeader3.Width = 300;
             // 
             // Form1
             // 
@@ -70,5 +85,7 @@
 
         private ListView processList;
         private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
+        private ColumnHeader columnHeader3;
     }
 }
