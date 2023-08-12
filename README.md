@@ -10,6 +10,7 @@ Limiting potential procrastination by tracking & controlling App usage. Leveragi
 - [x] Hook Window Change
 - [x] Assign preferred window
 - [ ] Enforce preferred window
+  - [x] Force focus of preferred window
   - [ ] Set enforcement time
 - [ ] Track App Usage
 - [ ] Log change attempts during alotted time
