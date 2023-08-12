@@ -77,19 +77,19 @@
             this.focusToolStripMenuItem,
             this.refreshToolStripMenuItem});
             this.mainStrip.Name = "mainStrip";
-            this.mainStrip.Size = new System.Drawing.Size(181, 70);
+            this.mainStrip.Size = new System.Drawing.Size(114, 48);
             // 
             // focusToolStripMenuItem
             // 
             this.focusToolStripMenuItem.Name = "focusToolStripMenuItem";
-            this.focusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.focusToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.focusToolStripMenuItem.Text = "Focus";
             this.focusToolStripMenuItem.Click += new System.EventHandler(this.focusToolStripMenuItem_Click);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
@@ -103,7 +103,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Focus";
+            this.Text = "Focus Application";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.mainStrip.ResumeLayout(false);
             this.ResumeLayout(false);

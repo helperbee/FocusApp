@@ -15,6 +15,10 @@ namespace Focus
         static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
@@ -46,9 +50,13 @@ namespace Focus
         {
 
             var foreground = GetForegroundWindow();
-            var foregroundTitle = GetText(foreground);
+            var foregroundTitle = GetText(foreground);//I should probably do a title check instead of a process check for chrome
             Debug.WriteLine(String.Format("{0} - {1}", foreground, targetId));
             Debug.WriteLine(foregroundTitle);
+            if (foreground != targetId && foreground != this.Handle)
+            {
+                SetForegroundWindow(targetId);
+            }
 
         }
 
@@ -84,7 +92,8 @@ namespace Focus
             foreach(ListViewItem p in processList.SelectedItems)
             {
                 Debug.WriteLine(p.Tag);
-                targetId = (IntPtr)p.Tag;                
+                targetId = (IntPtr)p.Tag;
+                this.Text = String.Format("Focusing - {0}", targetId);
             }
 
             
