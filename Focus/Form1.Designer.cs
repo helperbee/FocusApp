@@ -28,10 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.processList = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.mainStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.focusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // processList
@@ -41,6 +46,7 @@
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
+            this.processList.ContextMenuStrip = this.mainStrip;
             this.processList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.processList.FullRowSelect = true;
             this.processList.Location = new System.Drawing.Point(0, 0);
@@ -65,6 +71,28 @@
             this.columnHeader3.Text = "Window Title";
             this.columnHeader3.Width = 300;
             // 
+            // mainStrip
+            // 
+            this.mainStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.focusToolStripMenuItem,
+            this.refreshToolStripMenuItem});
+            this.mainStrip.Name = "mainStrip";
+            this.mainStrip.Size = new System.Drawing.Size(181, 70);
+            // 
+            // focusToolStripMenuItem
+            // 
+            this.focusToolStripMenuItem.Name = "focusToolStripMenuItem";
+            this.focusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.focusToolStripMenuItem.Text = "Focus";
+            this.focusToolStripMenuItem.Click += new System.EventHandler(this.focusToolStripMenuItem_Click);
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -77,6 +105,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Focus";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.mainStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -87,5 +116,8 @@
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
         private ColumnHeader columnHeader3;
+        private ContextMenuStrip mainStrip;
+        private ToolStripMenuItem focusToolStripMenuItem;
+        private ToolStripMenuItem refreshToolStripMenuItem;
     }
 }
