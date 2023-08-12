@@ -9,7 +9,12 @@ Limiting potential procrastination by tracking & controlling App usage. Leveragi
 # TODO List
 - [x] Hook Window Change
 - [x] Assign preferred window
-- [ ] Enforce preferred window for alotted time
+- [ ] Enforce preferred window
+  - [ ] Set enforcement time
 - [ ] Track App Usage
 - [ ] Log change attempts during alotted time
 - [ ] Overview of sessions
+- [ ] Session builder
+  - [ ] Define session duration 
+  - [ ] Allowed apps during a defined session
+  - [ ] Leeway?  
