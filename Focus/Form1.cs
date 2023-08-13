@@ -7,23 +7,10 @@ namespace Focus
 
     public partial class Form1 : Form
     {
-        IntPtr targetId = IntPtr.Zero;
         WinEventDelegate delegated = null;
         delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
         
-        [DllImport("user32.dll")]
-        static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
-
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern int GetWindowTextLength(IntPtr hWnd);
-
+       
         [DllImport("user32.dll")]
         static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
@@ -33,30 +20,24 @@ namespace Focus
         private const uint EVENT_SYSTEM_MINIMIZESTART = 22;
         private const uint EVENT_SYSTEM_MINIMIZEEND = 23;
 
-        public static string GetText(IntPtr hWnd)
-        {
-            int length = GetWindowTextLength(hWnd);
-            StringBuilder sb = new StringBuilder(length + 1);
-            GetWindowText(hWnd, sb, sb.Capacity);
-            return sb.ToString();
-        }
         public Form1()
         {
             InitializeComponent();
             delegated = new WinEventDelegate(HandleEvent);
             IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, delegated, 0, 0, WINEVENT_OUTOFCONTEXT);
         }
+
+        IntPtr current = IntPtr.Zero;
         public void HandleEvent(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
 
-            var foreground = GetForegroundWindow();
-            var foregroundTitle = GetText(foreground);//I should probably do a title check instead of a process check for chrome
-            Debug.WriteLine(String.Format("{0} - {1}", foreground, targetId));
-            Debug.WriteLine(foregroundTitle);
-            if (foreground != targetId && foreground != this.Handle)
-            {
-                SetForegroundWindow(targetId);
-            }
+            var foreground = Helpers.GetForegroundWindow();
+            var foregroundTitle = Helpers.GetText(foreground);//I should probably do a title check instead of a process check for chrome
+            if (foreground != Program.TargetInfo.Handle && foreground != this.Handle)            
+                Helpers.SetForegroundWindow(Program.TargetInfo.Handle);
+            if (current != foreground)
+                Program.Info.Add(new Info(current, foreground));
+            current = foreground;
 
         }
 
@@ -67,12 +48,12 @@ namespace Focus
             var pList = Process.GetProcesses();
             foreach (var p in pList)
             {
-                var windowTitle = GetText(p.MainWindowHandle);
+                var windowTitle = Helpers.GetText(p.MainWindowHandle);
                 if (windowTitle.Length > 0)//Probably implement a check on window's processes.
                 {
                     var item = new ListViewItem();
                     item.Tag = p.MainWindowHandle;
-                    if (targetId == p.MainWindowHandle)
+                    if (Program.TargetInfo.Handle == p.MainWindowHandle)
                         item.BackColor = Color.Green;
                     item.Text = p.Id.ToString();
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, p.ProcessName));
@@ -92,8 +73,8 @@ namespace Focus
             foreach(ListViewItem p in processList.SelectedItems)
             {
                 Debug.WriteLine(p.Tag);
-                targetId = (IntPtr)p.Tag;
-                this.Text = String.Format("Focusing - {0}", targetId);
+                Program.TargetInfo.Handle = (IntPtr)p.Tag;
+                this.Text = String.Format("Focusing - {0}", Program.TargetInfo.Handle);
             }
 
             
@@ -102,6 +83,14 @@ namespace Focus
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadProcesses();
+        }
+
+        private void infoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach(Info info in Program.Info)
+            {
+                Debug.WriteLine(String.Format("{0} -> {1}", info.From, info.To));
+            }
         }
     }
 }
