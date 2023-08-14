@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -62,48 +63,102 @@ namespace Focus
 
         private void LoadProcesses()
         {
-            processList.BeginUpdate();
-            processList.Items.Clear();
-            var pList = Process.GetProcesses();
-            imageList1.ImageSize = new Size(16, 16); // Set the desired image size
-            foreach (var p in pList)
+            processList.Invoke(new Action(() =>
             {
-
-                var windowTitle = Helpers.GetText(p.MainWindowHandle);
-                if (windowTitle.Length > 0)//Probably implement a check on window's processes.
+                processList.BeginUpdate();
+                processList.Items.Clear();
+                var pList = Process.GetProcesses();
+                imageList1.ImageSize = new Size(16, 16); // Set the desired image size
+                foreach (var p in pList)
                 {
-                    var item = new ListViewItem();
-                    try
+
+                    var windowTitle = Helpers.GetText(p.MainWindowHandle);
+                    if (windowTitle.Length > 0)//Probably implement a check on window's processes.
                     {
-                        Helpers.SHFILEINFO shinfo = new Helpers.SHFILEINFO();
-                        IntPtr hIcon = Helpers.SHGetFileInfo(Helpers.GetProcessFilename(p), 0, out shinfo, (uint)Marshal.SizeOf(typeof(Helpers.SHFILEINFO)), Helpers.SHGFI_ICON | Helpers.SHGFI_SMALLICON);
-
-
-                        if (hIcon != IntPtr.Zero)
+                        var item = new ListViewItem();
+                        try
                         {
-                            Icon icon = Icon.FromHandle(shinfo.hIcon);
-                            imageList1.Images.Add(icon);
-                            item.ImageIndex = imageList1.Images.Count - 1; // Index of the last added icon in the ImageList
-                            icon.Dispose(); // Dispose of the icon
+                            Helpers.SHFILEINFO shinfo = new Helpers.SHFILEINFO();
+                            IntPtr hIcon = Helpers.SHGetFileInfo(Helpers.GetProcessFilename(p), 0, out shinfo, (uint)Marshal.SizeOf(typeof(Helpers.SHFILEINFO)), Helpers.SHGFI_ICON | Helpers.SHGFI_SMALLICON);
+
+
+                            if (hIcon != IntPtr.Zero)
+                            {
+                                Icon icon = Icon.FromHandle(shinfo.hIcon);
+                                imageList1.Images.Add(icon);
+                                item.ImageIndex = imageList1.Images.Count - 1; // Index of the last added icon in the ImageList
+                                icon.Dispose(); // Dispose of the icon
+                            }
                         }
-                    }catch(Exception ex)
-                    {
-                        Debug.WriteLine($"Error getting Icon for : {windowTitle}");
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"Error getting Icon for : {windowTitle}");
+                        }
+                        item.Tag = p.MainWindowHandle;
+                        if (Program.TargetInfo.Handle == p.MainWindowHandle)
+                            item.BackColor = Color.Green;
+                        item.Text = p.ProcessName;
+                        item.SubItems.Add(new ListViewItem.ListViewSubItem(item, p.Id.ToString()));
+                        item.SubItems.Add(new ListViewItem.ListViewSubItem(item, windowTitle));
+                        processList.Items.Add(item);
                     }
-                    item.Tag = p.MainWindowHandle;
-                    if (Program.TargetInfo.Handle == p.MainWindowHandle)
-                        item.BackColor = Color.Green;
-                    item.Text = p.ProcessName;
-                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, p.Id.ToString()));
-                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, windowTitle));
-                    processList.Items.Add(item);
+                }
+                processList.EndUpdate();
+            }));
+        }
+        private ManagementEventWatcher _watcher;
+        private void InitializeProcessWatcher()
+        {
+            WqlEventQuery query = new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace OR Win32_ProcessStopTrace");
+
+            _watcher = new ManagementEventWatcher(query);
+            _watcher.EventArrived += ProcessEventArrived;
+            _watcher.Start();
+        }
+
+        private void ProcessEventArrived(object sender, EventArrivedEventArgs e)
+        {
+            LoadProcesses();//Lazy reload
+            /*int processId = Convert.ToInt32(e.NewEvent.Properties["ProcessID"].Value);
+            string eventType = e.NewEvent.ClassPath.ClassName;
+            Debug.WriteLine(e);
+            string processName = eventType == "Win32_ProcessStartTrace"
+                ? GetProcessName(processId)
+                : "Unknown";
+
+            ListViewItem item = new ListViewItem(new string[] { processId.ToString(), processName, eventType });
+
+            if (processList.InvokeRequired)
+            {
+                processList.Invoke(new Action(() => processList.Items.Add(item)));
+            }
+            else
+            {
+                processList.Items.Add(item);
+            }*/
+        }
+
+        private string GetProcessName(int processId)
+        {
+            string processName = "Unknown";
+
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher($"SELECT * FROM Win32_Process WHERE ProcessId = {processId}"))
+            {
+                foreach (ManagementObject obj in searcher.Get())
+                {
+                    processName = obj["Name"].ToString();
+                    break;
                 }
             }
-            processList.EndUpdate();
+
+            return processName;
         }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadProcesses();
+            InitializeProcessWatcher();
+
         }
 
         private void focusToolStripMenuItem_Click(object sender, EventArgs e)
@@ -130,6 +185,11 @@ namespace Focus
             {
                 Debug.WriteLine(String.Format("{0}({1}) -> {2}({3})", info.From.ProcessName, info.From.WindowTitle, info.To.ProcessName, info.To.WindowTitle));
             }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _watcher?.Stop();
         }
     }
 }
