@@ -110,7 +110,6 @@ namespace Focus
         private void InitializeProcessWatcher()
         {
             WqlEventQuery query = new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace OR Win32_ProcessStopTrace");
-
             _watcher = new ManagementEventWatcher(query);
             _watcher.EventArrived += ProcessEventArrived;
             _watcher.Start();
@@ -118,9 +117,12 @@ namespace Focus
 
         private void ProcessEventArrived(object sender, EventArrivedEventArgs e)
         {
-            LoadProcesses();//Lazy reload
-            /*int processId = Convert.ToInt32(e.NewEvent.Properties["ProcessID"].Value);
             string eventType = e.NewEvent.ClassPath.ClassName;
+            if (eventType == "Win32_ProcessStartTrace" || eventType == "Win32_ProcessStopTrace")
+            {
+                LoadProcesses();
+            }
+            /*int processId = Convert.ToInt32(e.NewEvent.Properties["ProcessID"].Value);
             Debug.WriteLine(e);
             string processName = eventType == "Win32_ProcessStartTrace"
                 ? GetProcessName(processId)
