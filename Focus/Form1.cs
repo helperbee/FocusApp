@@ -41,7 +41,11 @@ namespace Focus
                 if (foreground != Program.TargetInfo.Handle && foreground != this.Handle)
                     Helpers.SetForegroundWindow(Program.TargetInfo.Handle);
                 if (current != null && current.Handle != foreground)
+                {
+                    current.End = DateTime.Now;
+                    Debug.WriteLine(current.duration.ToString());
                     Program.Info.Add(new Info(current, createNew));
+                }
                 current = createNew;
                 Debug.WriteLine(foregroundTitle);
                 //Debug.WriteLine(String.Format("{0} - {1}", current.ProcessName, current.WindowTitle));
