@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -38,17 +39,23 @@ namespace Focus
             if (foregroundProcess != null && !Helpers.GetIsSystemFile(foregroundProcess))
             {
                 var createNew = new ProcessInfo(foreground);
-                if (foreground != Program.TargetInfo.Handle && foreground != this.Handle)
-                    Helpers.SetForegroundWindow(Program.TargetInfo.Handle);
-                if (current != null && current.Handle != foreground)
+                try
                 {
-                    current.End = DateTime.Now;
-                    Debug.WriteLine(current.duration.ToString());
-                    Program.Info.Add(new Info(current, createNew));
+                    if (foreground != Program.TargetInfo.Handle && foreground != this.Handle)
+                        Helpers.SetForegroundWindow(Program.TargetInfo.Handle);
+                    if (current != null && current.Handle != foreground)
+                    {
+                        current.End = DateTime.Now;
+                        Debug.WriteLine(current.duration.ToString());
+                        Program.Info.Add(new Info(current, createNew));
+                    }
+                    current = createNew;
+                    Debug.WriteLine(foregroundTitle);
+                    //Debug.WriteLine(String.Format("{0} - {1}", current.ProcessName, current.WindowTitle));
+                }catch(Exception ex)
+                {
+                    Debug.WriteLine(ex);
                 }
-                current = createNew;
-                Debug.WriteLine(foregroundTitle);
-                //Debug.WriteLine(String.Format("{0} - {1}", current.ProcessName, current.WindowTitle));
             }
 
         }
@@ -58,12 +65,24 @@ namespace Focus
             processList.BeginUpdate();
             processList.Items.Clear();
             var pList = Process.GetProcesses();
+            imageList1.ImageSize = new Size(16, 16); // Set the desired image size
             foreach (var p in pList)
             {
+
                 var windowTitle = Helpers.GetText(p.MainWindowHandle);
                 if (windowTitle.Length > 0)//Probably implement a check on window's processes.
                 {
+                    Helpers.SHFILEINFO shinfo = new Helpers.SHFILEINFO();
+                    IntPtr hIcon = Helpers.SHGetFileInfo(p.MainModule.FileName, 0, out shinfo, (uint)Marshal.SizeOf(typeof(Helpers.SHFILEINFO)), Helpers.SHGFI_ICON | Helpers.SHGFI_SMALLICON);
+
                     var item = new ListViewItem();
+                    if (hIcon != IntPtr.Zero)
+                    {
+                        Icon icon = Icon.FromHandle(shinfo.hIcon);
+                        imageList1.Images.Add(icon);
+                        item.ImageIndex = imageList1.Images.Count - 1; // Index of the last added icon in the ImageList
+                        icon.Dispose(); // Dispose of the icon
+                    }
                     item.Tag = p.MainWindowHandle;
                     if (Program.TargetInfo.Handle == p.MainWindowHandle)
                         item.BackColor = Color.Green;

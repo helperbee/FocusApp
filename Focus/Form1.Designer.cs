@@ -37,6 +37,7 @@
             this.focusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.mainStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,6 +54,7 @@
             this.processList.Location = new System.Drawing.Point(0, 0);
             this.processList.Name = "processList";
             this.processList.Size = new System.Drawing.Size(800, 450);
+            this.processList.SmallImageList = this.imageList1;
             this.processList.TabIndex = 0;
             this.processList.UseCompatibleStateImageBehavior = false;
             this.processList.View = System.Windows.Forms.View.Details;
@@ -79,28 +81,34 @@
             this.refreshToolStripMenuItem,
             this.infoToolStripMenuItem});
             this.mainStrip.Name = "mainStrip";
-            this.mainStrip.Size = new System.Drawing.Size(181, 92);
+            this.mainStrip.Size = new System.Drawing.Size(114, 70);
             // 
             // focusToolStripMenuItem
             // 
             this.focusToolStripMenuItem.Name = "focusToolStripMenuItem";
-            this.focusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.focusToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.focusToolStripMenuItem.Text = "Focus";
             this.focusToolStripMenuItem.Click += new System.EventHandler(this.focusToolStripMenuItem_Click);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.infoToolStripMenuItem.Text = "Info";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // Form1
             // 
@@ -129,5 +137,6 @@
         private ToolStripMenuItem focusToolStripMenuItem;
         private ToolStripMenuItem refreshToolStripMenuItem;
         private ToolStripMenuItem infoToolStripMenuItem;
+        private ImageList imageList1;
     }
 }
