@@ -72,22 +72,29 @@ namespace Focus
                 var windowTitle = Helpers.GetText(p.MainWindowHandle);
                 if (windowTitle.Length > 0)//Probably implement a check on window's processes.
                 {
-                    Helpers.SHFILEINFO shinfo = new Helpers.SHFILEINFO();
-                    IntPtr hIcon = Helpers.SHGetFileInfo(p.MainModule.FileName, 0, out shinfo, (uint)Marshal.SizeOf(typeof(Helpers.SHFILEINFO)), Helpers.SHGFI_ICON | Helpers.SHGFI_SMALLICON);
-
                     var item = new ListViewItem();
-                    if (hIcon != IntPtr.Zero)
+                    try
                     {
-                        Icon icon = Icon.FromHandle(shinfo.hIcon);
-                        imageList1.Images.Add(icon);
-                        item.ImageIndex = imageList1.Images.Count - 1; // Index of the last added icon in the ImageList
-                        icon.Dispose(); // Dispose of the icon
+                        Helpers.SHFILEINFO shinfo = new Helpers.SHFILEINFO();
+                        IntPtr hIcon = Helpers.SHGetFileInfo(Helpers.GetProcessFilename(p), 0, out shinfo, (uint)Marshal.SizeOf(typeof(Helpers.SHFILEINFO)), Helpers.SHGFI_ICON | Helpers.SHGFI_SMALLICON);
+
+
+                        if (hIcon != IntPtr.Zero)
+                        {
+                            Icon icon = Icon.FromHandle(shinfo.hIcon);
+                            imageList1.Images.Add(icon);
+                            item.ImageIndex = imageList1.Images.Count - 1; // Index of the last added icon in the ImageList
+                            icon.Dispose(); // Dispose of the icon
+                        }
+                    }catch(Exception ex)
+                    {
+                        Debug.WriteLine($"Error getting Icon for : {windowTitle}");
                     }
                     item.Tag = p.MainWindowHandle;
                     if (Program.TargetInfo.Handle == p.MainWindowHandle)
                         item.BackColor = Color.Green;
-                    item.Text = p.Id.ToString();
-                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, p.ProcessName));
+                    item.Text = p.ProcessName;
+                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, p.Id.ToString()));
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, windowTitle));
                     processList.Items.Add(item);
                 }

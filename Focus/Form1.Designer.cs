@@ -61,12 +61,12 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "PID";
-            this.columnHeader1.Width = 50;
+            this.columnHeader1.Text = "Process";
+            this.columnHeader1.Width = 175;
             // 
             // columnHeader2
             // 
-            this.columnHeader2.Text = "PNAME";
+            this.columnHeader2.Text = "PID";
             this.columnHeader2.Width = 100;
             // 
             // columnHeader3

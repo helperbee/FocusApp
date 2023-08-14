@@ -49,6 +49,24 @@ namespace Focus
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int processId);
 
+        [Flags]
+        private enum ProcessAccessFlags : uint
+        {
+            QueryLimitedInformation = 0x00001000
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool QueryFullProcessImageName(
+              [In] IntPtr hProcess,
+              [In] int dwFlags,
+              [Out] StringBuilder lpExeName,
+              ref int lpdwSize);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr OpenProcess(
+         ProcessAccessFlags processAccess,
+         bool bInheritHandle,
+         int processId);
         public static string GetText(IntPtr hWnd)
         {
             int length = GetWindowTextLength(hWnd);
@@ -56,7 +74,18 @@ namespace Focus
             GetWindowText(hWnd, sb, sb.Capacity);
             return sb.ToString();
         }
+        public static string GetProcessFilename(Process p)
+        {
+            int capacity = 2000;
+            StringBuilder builder = new StringBuilder(capacity);
+            IntPtr ptr = OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, p.Id);
+            if (!QueryFullProcessImageName(ptr, 0, builder, ref capacity))
+            {
+                return String.Empty;
+            }
 
+            return builder.ToString();
+        }
         public static int GetProcessIdFromHandle(IntPtr handle)
         {
             try
@@ -94,7 +123,7 @@ namespace Focus
             try
             {
                 string systemFolderPath = Environment.GetEnvironmentVariable("SystemRoot");
-                string mainModuleFilePath = targetProcess.MainModule.FileName;
+                string mainModuleFilePath = GetProcessFilename(targetProcess);
                 systemFolderPath = Path.GetFullPath(systemFolderPath).ToLower();
                 mainModuleFilePath = Path.GetFullPath(mainModuleFilePath).ToLower();
                 return mainModuleFilePath.StartsWith(systemFolderPath);
