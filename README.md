@@ -12,7 +12,7 @@ Limiting potential procrastination by tracking & controlling App usage. Leveragi
 - [ ] Enforce preferred window
   - [x] Force focus of preferred window
   - [ ] Set enforcement time
-- [ ] Track App Usage
+- [x] Track App Usage
 - [ ] Log change attempts during alotted time
 - [ ] Overview of sessions
 - [ ] Session builder
