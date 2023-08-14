@@ -27,17 +27,25 @@ namespace Focus
             IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, delegated, 0, 0, WINEVENT_OUTOFCONTEXT);
         }
 
-        IntPtr current = IntPtr.Zero;
+        ProcessInfo current;
         public void HandleEvent(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
 
             var foreground = Helpers.GetForegroundWindow();
+            var foregroundProcessId = Helpers.GetProcessIdFromHandle(foreground);
+            var foregroundProcess = Process.GetProcessById(foregroundProcessId);
             var foregroundTitle = Helpers.GetText(foreground);//I should probably do a title check instead of a process check for chrome
-            if (foreground != Program.TargetInfo.Handle && foreground != this.Handle)            
-                Helpers.SetForegroundWindow(Program.TargetInfo.Handle);
-            if (current != foreground)
-                Program.Info.Add(new Info(current, foreground));
-            current = foreground;
+            if (foregroundProcess != null && !Helpers.GetIsSystemFile(foregroundProcess))
+            {
+                var createNew = new ProcessInfo(foreground);
+                if (foreground != Program.TargetInfo.Handle && foreground != this.Handle)
+                    Helpers.SetForegroundWindow(Program.TargetInfo.Handle);
+                if (current != null && current.Handle != foreground)
+                    Program.Info.Add(new Info(current, createNew));
+                current = createNew;
+                Debug.WriteLine(foregroundTitle);
+                //Debug.WriteLine(String.Format("{0} - {1}", current.ProcessName, current.WindowTitle));
+            }
 
         }
 
@@ -89,7 +97,7 @@ namespace Focus
         {
             foreach(Info info in Program.Info)
             {
-                Debug.WriteLine(String.Format("{0} -> {1}", info.From, info.To));
+                Debug.WriteLine(String.Format("{0}({1}) -> {2}({3})", info.From.ProcessName, info.From.WindowTitle, info.To.ProcessName, info.To.WindowTitle));
             }
         }
     }
