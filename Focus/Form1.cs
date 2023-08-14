@@ -99,6 +99,7 @@ namespace Focus
 
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            new Events().ShowDialog();
             foreach(Info info in Program.Info)
             {
                 Debug.WriteLine(String.Format("{0}({1}) -> {2}({3})", info.From.ProcessName, info.From.WindowTitle, info.To.ProcessName, info.To.WindowTitle));
