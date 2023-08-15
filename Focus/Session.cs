@@ -9,7 +9,7 @@ namespace Focus
     public class Session
     {
         private DateTime _end;
-        private List<Target> Target_target;
+        private List<Target> Target_target; //use a dictionary here
         public Session(List<Target> target, double sessionMinutes) {
             this._end = DateTime.Now.AddMinutes(sessionMinutes);
             this.Target_target = target;

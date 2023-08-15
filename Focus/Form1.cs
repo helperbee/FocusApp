@@ -176,6 +176,7 @@ namespace Focus
             {
                 List<Target> selectedItems = processList.SelectedItems.Cast<ListViewItem>().Select(item => new Target((IntPtr)item.Tag)).ToList();
                 new Builder(selectedItems).ShowDialog();
+                LoadProcesses();
             }
             /*foreach(ListViewItem p in processList.SelectedItems)
             {
