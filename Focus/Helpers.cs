@@ -134,5 +134,25 @@ namespace Focus
             }
             return true;
         }
+
+        public static List<Info> InfoList(ListView.SelectedListViewItemCollection selectedItems)
+        {            
+            var outList = new List<Info>();
+            if (selectedItems.Count > 0)
+            {
+                //this has to be bad logic
+                foreach(ListViewItem item in selectedItems)
+                {
+                    foreach(Info info in Program.Info)
+                    {
+                        if(info.From.Handle == (IntPtr)item.Tag)
+                            outList.Add(info);
+                    }
+                }
+            }
+            else
+                return Program.Info;
+            return outList;
+        }
     }
 }

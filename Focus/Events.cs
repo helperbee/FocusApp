@@ -12,13 +12,15 @@ namespace Focus
 {
     public partial class Events : Form
     {
-        public Events()
+        private List<Info> _events;
+        public Events(List<Info> InfoList)
         {
+            _events = InfoList;
             InitializeComponent();
         }
         private void Events_Load(object sender, EventArgs e)
         {
-            foreach(Info info in Program.Info)
+             foreach(Info info in _events)
             {
                 var item = new ListViewItem();
                 item.Text = String.Format("({0}){1}", info.From.ProcessName, info.From.WindowTitle);
