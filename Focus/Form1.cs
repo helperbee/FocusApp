@@ -50,8 +50,8 @@ namespace Focus
                 var createNew = new ProcessInfo(foreground);
                 try
                 {
-                    if (Program.session != null && !Program.session.IsSessionFinished() && foreground != Program.session.TargetInfo.Handle && foreground != this.Handle)
-                        Helpers.SetForegroundWindow(Program.session.TargetInfo.Handle);
+                    if (Program.session != null && !Program.session.IsSessionFinished() && Program.session.FindTarget(foreground) == null && foreground != this.Handle)
+                        Helpers.SetForegroundWindow(Program.session.TargetList[0].Handle);
                     if (current != null && current.Handle != foreground)
                     {
                         current.End = DateTime.Now;
@@ -103,7 +103,7 @@ namespace Focus
                             Debug.WriteLine($"Error getting Icon for : {windowTitle}");
                         }
                         item.Tag = p.MainWindowHandle;
-                        if (Program.session != null && Program.session.TargetInfo.Handle == p.MainWindowHandle)
+                        if (Program.session != null && Program.session.FindTarget(p.MainWindowHandle) != null)
                             item.BackColor = Color.Green;
                         item.Text = p.ProcessName;
                         item.SubItems.Add(new ListViewItem.ListViewSubItem(item, p.Id.ToString()));
@@ -174,9 +174,8 @@ namespace Focus
         {
             if(processList.SelectedItems.Count > 0)
             {
-                var selectedItem = processList.SelectedItems[0];
-                var potentialTarget = new Target((IntPtr)selectedItem.Tag);
-                new Builder(potentialTarget).ShowDialog();
+                List<Target> selectedItems = processList.SelectedItems.Cast<ListViewItem>().Select(item => new Target((IntPtr)item.Tag)).ToList();
+                new Builder(selectedItems).ShowDialog();
             }
             /*foreach(ListViewItem p in processList.SelectedItems)
             {

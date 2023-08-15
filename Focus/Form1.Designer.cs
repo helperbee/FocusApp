@@ -52,7 +52,6 @@
             this.processList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.processList.FullRowSelect = true;
             this.processList.Location = new System.Drawing.Point(0, 0);
-            this.processList.MultiSelect = false;
             this.processList.Name = "processList";
             this.processList.Size = new System.Drawing.Size(800, 450);
             this.processList.SmallImageList = this.imageList1;
@@ -82,26 +81,26 @@
             this.refreshToolStripMenuItem,
             this.infoToolStripMenuItem});
             this.mainStrip.Name = "mainStrip";
-            this.mainStrip.Size = new System.Drawing.Size(114, 70);
+            this.mainStrip.Size = new System.Drawing.Size(181, 92);
             // 
             // focusToolStripMenuItem
             // 
             this.focusToolStripMenuItem.Name = "focusToolStripMenuItem";
-            this.focusToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.focusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.focusToolStripMenuItem.Text = "Focus";
             this.focusToolStripMenuItem.Click += new System.EventHandler(this.focusToolStripMenuItem_Click);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.infoToolStripMenuItem.Text = "Info";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 

@@ -12,12 +12,11 @@ namespace Focus
 {
     public partial class Builder : Form
     {
-        private Target myTarget;
-        public Builder(Target potentialTarget)
+        private List<Target> myTarget;
+        public Builder(List<Target> potentialTarget)
         {
             myTarget = potentialTarget;
             InitializeComponent();
-            this.Text = potentialTarget.WindowTitle;
         }
 
         private void button1_Click(object sender, EventArgs e)
