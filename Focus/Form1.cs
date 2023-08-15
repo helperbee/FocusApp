@@ -33,7 +33,8 @@ namespace Focus
         {
             InitializeComponent();
             delegated = new WinEventDelegate(HandleEvent);
-            IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, delegated, 0, 0, WINEVENT_OUTOFCONTEXT);           
+            IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, delegated, 0, 0, WINEVENT_OUTOFCONTEXT);
+            imageList1.ImageSize = new Size(16, 16);
 
         }
 
@@ -71,12 +72,13 @@ namespace Focus
 
         private void LoadProcesses()
         {
+            //This can be changed to use references
             processList.Invoke(new Action(() =>
             {
                 processList.BeginUpdate();
                 processList.Items.Clear();
                 var pList = Process.GetProcesses();
-                imageList1.ImageSize = new Size(16, 16); // Set the desired image size
+                imageList1.Images.Clear();//oh
                 foreach (var p in pList)
                 {
 
@@ -109,6 +111,7 @@ namespace Focus
                         item.SubItems.Add(new ListViewItem.ListViewSubItem(item, p.Id.ToString()));
                         item.SubItems.Add(new ListViewItem.ListViewSubItem(item, windowTitle));
                         processList.Items.Add(item);
+                        
                     }
                 }
                 processList.EndUpdate();
