@@ -2,7 +2,7 @@ namespace Focus
 {
     internal static class Program
     {
-        public static Target TargetInfo = new Target(IntPtr.Zero);
+        public static Session session;
         public static List<Info> Info = new List<Info>();
         /// <summary>
         ///  The main entry point for the application.

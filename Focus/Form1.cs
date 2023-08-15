@@ -22,11 +22,19 @@ namespace Focus
         private const uint EVENT_SYSTEM_MINIMIZESTART = 22;
         private const uint EVENT_SYSTEM_MINIMIZEEND = 23;
 
+        public class ListProcess
+        {
+            public string Name { get; set; }
+            public int Id { get; set; }
+            public string Title { get; set; }
+        }
+        private Dictionary<string, ListProcess> processes = new Dictionary<string, ListProcess>();
         public Form1()
         {
             InitializeComponent();
             delegated = new WinEventDelegate(HandleEvent);
-            IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, delegated, 0, 0, WINEVENT_OUTOFCONTEXT);
+            IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, delegated, 0, 0, WINEVENT_OUTOFCONTEXT);           
+
         }
 
         ProcessInfo current;
@@ -42,8 +50,8 @@ namespace Focus
                 var createNew = new ProcessInfo(foreground);
                 try
                 {
-                    if (foreground != Program.TargetInfo.Handle && foreground != this.Handle)
-                        Helpers.SetForegroundWindow(Program.TargetInfo.Handle);
+                    if (Program.session != null && !Program.session.IsSessionFinished() && foreground != Program.session.TargetInfo.Handle && foreground != this.Handle)
+                        Helpers.SetForegroundWindow(Program.session.TargetInfo.Handle);
                     if (current != null && current.Handle != foreground)
                     {
                         current.End = DateTime.Now;
@@ -95,7 +103,7 @@ namespace Focus
                             Debug.WriteLine($"Error getting Icon for : {windowTitle}");
                         }
                         item.Tag = p.MainWindowHandle;
-                        if (Program.TargetInfo.Handle == p.MainWindowHandle)
+                        if (Program.session != null && Program.session.TargetInfo.Handle == p.MainWindowHandle)
                             item.BackColor = Color.Green;
                         item.Text = p.ProcessName;
                         item.SubItems.Add(new ListViewItem.ListViewSubItem(item, p.Id.ToString()));
@@ -160,17 +168,22 @@ namespace Focus
         {
             LoadProcesses();
             InitializeProcessWatcher();
-
         }
 
         private void focusToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach(ListViewItem p in processList.SelectedItems)
+            if(processList.SelectedItems.Count > 0)
+            {
+                var selectedItem = processList.SelectedItems[0];
+                var potentialTarget = new Target((IntPtr)selectedItem.Tag);
+                new Builder(potentialTarget).ShowDialog();
+            }
+            /*foreach(ListViewItem p in processList.SelectedItems)
             {
                 Debug.WriteLine(p.Tag);
                 Program.TargetInfo.Handle = (IntPtr)p.Tag;
                 this.Text = String.Format("Focusing - {0}", Program.TargetInfo.Handle);
-            }
+            }*/
 
             
         }

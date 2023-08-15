@@ -52,6 +52,7 @@
             this.processList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.processList.FullRowSelect = true;
             this.processList.Location = new System.Drawing.Point(0, 0);
+            this.processList.MultiSelect = false;
             this.processList.Name = "processList";
             this.processList.Size = new System.Drawing.Size(800, 450);
             this.processList.SmallImageList = this.imageList1;
