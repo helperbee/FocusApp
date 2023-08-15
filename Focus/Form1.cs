@@ -16,24 +16,22 @@ namespace Focus
         [DllImport("user32.dll")]
         static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
+
+        [DllImport("user32.dll")]
+        static extern bool UnhookWinEvent(IntPtr hWinEventHook);
+
         private const uint WINEVENT_OUTOFCONTEXT = 0;
         private const uint EVENT_SYSTEM_FOREGROUND = 3;
 
         private const uint EVENT_SYSTEM_MINIMIZESTART = 22;
         private const uint EVENT_SYSTEM_MINIMIZEEND = 23;
+        private IntPtr m_hhook;
 
-        public class ListProcess
-        {
-            public string Name { get; set; }
-            public int Id { get; set; }
-            public string Title { get; set; }
-        }
-        private Dictionary<string, ListProcess> processes = new Dictionary<string, ListProcess>();
         public Form1()
         {
             InitializeComponent();
             delegated = new WinEventDelegate(HandleEvent);
-            IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, delegated, 0, 0, WINEVENT_OUTOFCONTEXT);
+            m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, delegated, 0, 0, WINEVENT_OUTOFCONTEXT);
             imageList1.ImageSize = new Size(16, 16);
 
         }
@@ -208,6 +206,7 @@ namespace Focus
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             _watcher?.Stop();
+            UnhookWinEvent(m_hhook);
         }
     }
 }
