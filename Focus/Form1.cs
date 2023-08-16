@@ -97,9 +97,10 @@ namespace Focus
 
                                 }
                             }
-                            if(ApplicationIcons.ContainsKey(filePath))//Change logic? 
+                            if (ApplicationIcons.ContainsKey(filePath)) {//Change logic? 
                                 imageList1.Images.Add(ApplicationIcons[filePath]);
-                            item.ImageIndex = imageList1.Images.Count - 1; // Index of the last added icon in the ImageList
+                                item.ImageIndex = imageList1.Images.Count - 1; // Index of the last added icon in the ImageList
+                            }
 
 
                         }
@@ -169,11 +170,13 @@ namespace Focus
 
             return processName;
         }
-
+        private ListViewColumnSorter lvwColumnSorter;
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadProcesses();
             InitializeProcessWatcher();
+            lvwColumnSorter = new ListViewColumnSorter();
+            processList.ListViewItemSorter = lvwColumnSorter;
         }
 
         private void focusToolStripMenuItem_Click(object sender, EventArgs e)
@@ -212,6 +215,31 @@ namespace Focus
         {
             _watcher?.Stop();
             UnhookWinEvent(m_hhook);
+        }
+
+        private void processList_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column == lvwColumnSorter.SortColumn)
+            {
+                // Reverse the current sort direction for this column.
+                if (lvwColumnSorter.Order == SortOrder.Ascending)
+                {
+                    lvwColumnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    lvwColumnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                // Set the column number that is to be sorted; default to ascending.
+                lvwColumnSorter.SortColumn = e.Column;
+                lvwColumnSorter.Order = SortOrder.Ascending;
+            }
+
+            // Perform the sort with these new sort options.
+            processList.Sort();
         }
     }
 }
