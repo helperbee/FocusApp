@@ -68,6 +68,7 @@ namespace Focus
 
         }
 
+        private Dictionary<string, Icon> ApplicationIcons = new Dictionary<string, Icon>(); //Testing memory issue
         private void LoadProcesses()
         {
             //This can be changed to use references
@@ -76,7 +77,6 @@ namespace Focus
                 processList.BeginUpdate();
                 processList.Items.Clear();
                 var pList = Process.GetProcesses();
-                imageList1.Images.Clear();//oh
                 foreach (var p in pList)
                 {
 
@@ -86,17 +86,22 @@ namespace Focus
                         var item = new ListViewItem();
                         try
                         {
-                            Helpers.SHFILEINFO shinfo = new Helpers.SHFILEINFO();
-                            IntPtr hIcon = Helpers.SHGetFileInfo(Helpers.GetProcessFilename(p), 0, out shinfo, (uint)Marshal.SizeOf(typeof(Helpers.SHFILEINFO)), Helpers.SHGFI_ICON | Helpers.SHGFI_SMALLICON);
+                            string filePath = Helpers.GetProcessFilename(p);
+                            if(!ApplicationIcons.ContainsKey(filePath)) {
+                                Helpers.SHFILEINFO shinfo = new Helpers.SHFILEINFO();
+                                IntPtr hIcon = Helpers.SHGetFileInfo(filePath, 0, out shinfo, (uint)Marshal.SizeOf(typeof(Helpers.SHFILEINFO)), Helpers.SHGFI_ICON | Helpers.SHGFI_SMALLICON);
+                                if (hIcon != IntPtr.Zero)
+                                {
+                                    Icon icon = Icon.FromHandle(shinfo.hIcon);
+                                    ApplicationIcons.Add(filePath, icon);                                   
 
-
-                            if (hIcon != IntPtr.Zero)
-                            {
-                                Icon icon = Icon.FromHandle(shinfo.hIcon);
-                                imageList1.Images.Add(icon);
-                                item.ImageIndex = imageList1.Images.Count - 1; // Index of the last added icon in the ImageList
-                                icon.Dispose(); // Dispose of the icon
+                                }
                             }
+                            if(ApplicationIcons.ContainsKey(filePath))//Change logic? 
+                                imageList1.Images.Add(ApplicationIcons[filePath]);
+                            item.ImageIndex = imageList1.Images.Count - 1; // Index of the last added icon in the ImageList
+
+
                         }
                         catch (Exception ex)
                         {
