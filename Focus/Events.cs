@@ -31,6 +31,8 @@ namespace Focus
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, info.From.duration.ToString()));
                 listView1.Items.Add(item);
             }
+            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)

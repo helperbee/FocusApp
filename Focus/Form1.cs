@@ -118,6 +118,8 @@ namespace Focus
                         
                     }
                 }
+                processList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                processList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
                 processList.EndUpdate();
             }));
         }
