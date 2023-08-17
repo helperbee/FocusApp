@@ -50,6 +50,7 @@
             this.Controls.Add(this.listView1);
             this.Name = "Sessions";
             this.Text = "Sessions";
+            this.Load += new System.EventHandler(this.Sessions_Load);
             this.ResumeLayout(false);
 
         }

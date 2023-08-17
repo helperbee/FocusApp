@@ -26,8 +26,10 @@ namespace Focus
             foreach (Info info in _events)
             {
                 var item = new ListViewItem();
-                item.Text = String.Format("({0}){1}", info.From.ProcessName, info.From.WindowTitle);
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, String.Format("({0}){1}", info.To.ProcessName, info.To.WindowTitle)));
+                item.Text = info.From.ProcessName;
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, info.From.WindowTitle));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, info.To.ProcessName));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, info.To.WindowTitle));
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, info.From.duration.ToString()));
                 listView1.Items.Add(item);
             }
@@ -67,12 +69,13 @@ namespace Focus
             {
                 StringBuilder toClipboard = new StringBuilder();
                 double totalSeconds = 0;
+                string processName = (_events.Count > 0) ? _events[0].From.ProcessName : "Undefined";
                 foreach (Info info in _events)
                 {
                     totalSeconds += info.From.duration.TotalSeconds;
                     toClipboard.AppendLine(String.Format("{0}->{1} | {2}", info.From.ProcessName, info.To.ProcessName, info.From.duration.ToString(@"d\.hh\:mm\:ss")));                  
                 }
-                toClipboard.AppendLine(String.Format("Total Time Spent : {0}", TimeSpan.FromSeconds(totalSeconds).ToString(@"hh\:mm\:ss")));
+                toClipboard.AppendLine(String.Format("Total Time Spent in {0} : {1}", processName, TimeSpan.FromSeconds(totalSeconds).ToString(@"hh\:mm\:ss")));
                 Clipboard.SetDataObject(toClipboard.ToString());//Set to computer's clipboard
             }
         }

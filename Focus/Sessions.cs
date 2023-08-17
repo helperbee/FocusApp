@@ -16,5 +16,10 @@ namespace Focus
         {
             InitializeComponent();
         }
+
+        private void Sessions_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
