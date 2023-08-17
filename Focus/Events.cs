@@ -60,5 +60,21 @@ namespace Focus
             // Perform the sort with these new sort options.
             this.listView1.Sort();
         }
+
+        private void listView1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Control && e.KeyCode == Keys.C)
+            {
+                StringBuilder toClipboard = new StringBuilder();
+                double totalSeconds = 0;
+                foreach (Info info in _events)
+                {
+                    totalSeconds += info.From.duration.TotalSeconds;
+                    toClipboard.AppendLine(String.Format("{0}->{1} | {2}", info.From.ProcessName, info.To.ProcessName, info.From.duration.ToString(@"d\.hh\:mm\:ss")));                  
+                }
+                toClipboard.AppendLine(String.Format("Total Time Spent : {0}", TimeSpan.FromSeconds(totalSeconds).ToString(@"hh\:mm\:ss")));
+                Clipboard.SetDataObject(toClipboard.ToString());//Set to computer's clipboard
+            }
+        }
     }
 }
