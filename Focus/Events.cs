@@ -16,12 +16,12 @@ namespace Focus
         public Events(List<Info> InfoList)
         {
             _events = InfoList;
+            lvwColumnSorter = new ListViewColumnSorter();
             InitializeComponent();
         }
         private ListViewColumnSorter lvwColumnSorter;
         private void Events_Load(object sender, EventArgs e)
         {
-            lvwColumnSorter = new ListViewColumnSorter();
             this.listView1.ListViewItemSorter = lvwColumnSorter;
             foreach (Info info in _events)
             {

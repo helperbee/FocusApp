@@ -9,13 +9,19 @@ namespace Focus
     public class Target
     {
         private IntPtr windowHandle;
-        public Target(IntPtr handle) {
+        private string windowTitle;
+        private DateTime createdAt;
+        public Target(IntPtr handle, string title = null) {
             this.windowHandle = handle;
+            this.windowTitle = (title != null ? title : Helpers.GetText(handle));
+            this.createdAt = DateTime.Now;
+            
         }
         public string WindowTitle
         {
-            get => Helpers.GetText(windowHandle);            
+            get => this.windowTitle;            
         }
+        public DateTime At { get => createdAt; }
         public IntPtr Handle
         {
             get => windowHandle;

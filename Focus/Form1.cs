@@ -1,8 +1,6 @@
-using System;
 using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Focus
 {
@@ -49,8 +47,16 @@ namespace Focus
                 var createNew = new ProcessInfo(foreground);
                 try
                 {
-                    if (Program.session != null && !Program.session.IsSessionFinished() && Program.session.FindTarget(foreground) == null && foreground != this.Handle)
-                        Helpers.SetForegroundWindow(Program.session.TargetList[0].Handle);
+                    //set session to null after session ends? can be down through sessionfinished check
+                    if (Program.session != null && !Program.session.IsSessionFinished() && Program.session.FindTarget(foreground) == null && foregroundProcessId != Process.GetCurrentProcess().Id)
+                    {
+                        //you're being sent back to a supported application.
+                        var maxRandom = Program.session.TargetList.Count;
+                        Helpers.SetForegroundWindow(Program.session.TargetList[new Random().Next(0, maxRandom)].Handle); //Randomly switch into a supported window within targetList
+                        //Add this attempt to the session's attempt list
+                        var newAttempt = new Target(foreground, foregroundTitle);
+                        Program.session.AttemptedList.Add(newAttempt);//add to attempted list to show BAD attempts during a defined session;
+                    }
                     if (current != null && current.Handle != foreground)
                     {
                         current.End = DateTime.Now;
@@ -109,7 +115,7 @@ namespace Focus
                             Debug.WriteLine($"Error getting Icon for : {windowTitle}");
                         }
                         item.Tag = p.MainWindowHandle;
-                        if (Program.session != null && Program.session.FindTarget(p.MainWindowHandle) != null)
+                        if (Program.session != null && !Program.session.IsSessionFinished() && Program.session.FindTarget(p.MainWindowHandle) != null)
                             item.BackColor = Color.Green;
                         item.Text = p.ProcessName;
                         item.SubItems.Add(new ListViewItem.ListViewSubItem(item, p.Id.ToString()));
@@ -242,6 +248,11 @@ namespace Focus
 
             // Perform the sort with these new sort options.
             processList.Sort();
+        }
+
+        private void pastSessionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Sessions().Show();
         }
     }
 }
