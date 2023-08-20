@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.processList = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
@@ -38,8 +39,8 @@
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pastSessionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.endEarlyTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.mainStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,48 +87,49 @@
             this.pastSessionsToolStripMenuItem,
             this.endEarlyTestToolStripMenuItem});
             this.mainStrip.Name = "mainStrip";
-            this.mainStrip.Size = new System.Drawing.Size(181, 136);
+            this.mainStrip.Size = new System.Drawing.Size(137, 114);
             // 
             // focusToolStripMenuItem
             // 
             this.focusToolStripMenuItem.Name = "focusToolStripMenuItem";
-            this.focusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.focusToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.focusToolStripMenuItem.Text = "Focus";
             this.focusToolStripMenuItem.Click += new System.EventHandler(this.focusToolStripMenuItem_Click);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.infoToolStripMenuItem.Text = "Info";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
             // pastSessionsToolStripMenuItem
             // 
             this.pastSessionsToolStripMenuItem.Name = "pastSessionsToolStripMenuItem";
-            this.pastSessionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pastSessionsToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.pastSessionsToolStripMenuItem.Text = "Sessions";
             this.pastSessionsToolStripMenuItem.Click += new System.EventHandler(this.pastSessionsToolStripMenuItem_Click);
+            // 
+            // endEarlyTestToolStripMenuItem
+            // 
+            this.endEarlyTestToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.endEarlyTestToolStripMenuItem.Name = "endEarlyTestToolStripMenuItem";
+            this.endEarlyTestToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.endEarlyTestToolStripMenuItem.Text = "End Session";
+            this.endEarlyTestToolStripMenuItem.Click += new System.EventHandler(this.endEarlyTestToolStripMenuItem_Click);
             // 
             // imageList1
             // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // endEarlyTestToolStripMenuItem
-            // 
-            this.endEarlyTestToolStripMenuItem.Name = "endEarlyTestToolStripMenuItem";
-            this.endEarlyTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.endEarlyTestToolStripMenuItem.Text = "End Early Test";
-            this.endEarlyTestToolStripMenuItem.Click += new System.EventHandler(this.endEarlyTestToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -136,6 +138,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.processList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

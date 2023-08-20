@@ -31,6 +31,7 @@ namespace Focus
                 }
                 var item = new ListViewItem();
                 item.Text = session.Name;
+                item.Tag = x;//Useful for viewsession logic.
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, string.Join(", ", processNames)));
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, session.Minutes));
                 listView1.Items.Add(item);
@@ -39,6 +40,20 @@ namespace Focus
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
 
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void viewSessionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(listView1.SelectedItems.Count > 0)
+            {
+                var targetSession = Program.sessionStorage[(int)listView1.SelectedItems[0].Tag];
+                new ViewSession(targetSession).ShowDialog();
+            }
         }
     }
 }

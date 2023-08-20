@@ -36,12 +36,12 @@
             // 
             // listView1
             // 
-            this.listView1.CheckBoxes = true;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(1447, 450);
@@ -61,13 +61,13 @@
             // 
             this.columnHeader3.Text = "At";
             // 
-            // Sessions
+            // ViewSession
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1447, 450);
             this.Controls.Add(this.listView1);
-            this.Name = "Sessions";
+            this.Name = "ViewSession";
             this.Text = "Sessions";
             this.Load += new System.EventHandler(this.Sessions_Load);
             this.ResumeLayout(false);

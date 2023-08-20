@@ -13,14 +13,17 @@ namespace Focus
 {
     public partial class ViewSession : Form
     {
-        public ViewSession()
+        private Session targetSession;
+        public ViewSession(Session session)
         {
+            targetSession = session;
             InitializeComponent();
         }
 
         private void Sessions_Load(object sender, EventArgs e)
         {
-            foreach(var x in Program.session.AttemptedList)
+            this.Text = $"Overview for Session '{targetSession.Name}'";
+            foreach(var x in targetSession.AttemptedList)
             {
                 var item = new ListViewItem();
                 item.Text = x.ProcessName;

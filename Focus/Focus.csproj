@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>concentrate.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="concentrate.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Management" Version="7.0.2" />
