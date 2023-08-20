@@ -19,11 +19,25 @@ namespace Focus
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buildBtn_click(object sender, EventArgs e)
         {
             //Build
-            Program.session = new Session(myTarget, (double)numericUpDown1.Value);
-            this.Close();
+            if (textBox1.Text.Length > 0)
+            {
+                Program.session = new Session(myTarget, (double)numericUpDown1.Value, textBox1.Text);
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Please give the session a name.", "MANDATORY", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void Builder_Load(object sender, EventArgs e)
+        {
+            textBox1.Text = $"Session #{Program.sessionStorage.Count + 1}";
+            textBox1.Select();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -69,15 +70,23 @@ namespace Focus
             {
                 StringBuilder toClipboard = new StringBuilder();
                 double totalSeconds = 0;
-                string processName = (_events.Count > 0) ? _events[0].From.ProcessName : "Undefined";
+                List<string> processNames = new List<string>();
+
                 foreach (Info info in _events)
                 {
                     totalSeconds += info.From.duration.TotalSeconds;
-                    toClipboard.AppendLine(String.Format("{0}->{1} | {2}", info.From.ProcessName, info.To.ProcessName, info.From.duration.ToString(@"d\.hh\:mm\:ss")));                  
+                    if(!processNames.Contains(info.From.ProcessName))
+                        processNames.Add(info.From.ProcessName);
+
+                    //toClipboard.AppendLine(String.Format("{0}->{1} | {2}", info.From.ProcessName, info.To.ProcessName, info.From.duration.ToString(@"d\.hh\:mm\:ss")));                  
                 }
-                toClipboard.AppendLine(String.Format("Total Time Spent in {0} : {1}", processName, TimeSpan.FromSeconds(totalSeconds).ToString(@"hh\:mm\:ss")));
+                TimeSpan totalDuration = TimeSpan.FromSeconds(totalSeconds);
+                string formattedTotalDuration = string.Format("{0:D2}:{1:D2}:{2:D2}", totalDuration.Hours, totalDuration.Minutes, totalDuration.Seconds);
+
+                toClipboard.AppendLine(String.Format("Total Time Spent in {0} : {1}", string.Join(", ", processNames), formattedTotalDuration));
                 Clipboard.SetDataObject(toClipboard.ToString());//Set to computer's clipboard
             }
         }
+        
     }
 }

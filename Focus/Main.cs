@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Focus
 {
 
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
         WinEventDelegate delegated = null;
         delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
@@ -25,7 +25,7 @@ namespace Focus
         private const uint EVENT_SYSTEM_MINIMIZEEND = 23;
         private IntPtr m_hhook;
 
-        public Form1()
+        public Main()
         {
             InitializeComponent();
             delegated = new WinEventDelegate(HandleEvent);
@@ -48,13 +48,20 @@ namespace Focus
                 try
                 {
                     //set session to null after session ends? can be down through sessionfinished check
+
+                    //change this later
+                    if(Program.session != null && Program.session.IsSessionFinished())
+                    {
+                        Program.sessionStorage.Add(Program.session);
+                        Program.session = null;
+                    }
                     if (Program.session != null && !Program.session.IsSessionFinished() && Program.session.FindTarget(foreground) == null && foregroundProcessId != Process.GetCurrentProcess().Id)
                     {
                         //you're being sent back to a supported application.
                         var maxRandom = Program.session.TargetList.Count;
                         Helpers.SetForegroundWindow(Program.session.TargetList[new Random().Next(0, maxRandom)].Handle); //Randomly switch into a supported window within targetList
                         //Add this attempt to the session's attempt list
-                        var newAttempt = new Target(foreground, foregroundTitle);
+                        var newAttempt = new Target(foreground, foregroundTitle, foregroundProcess.ProcessName);
                         Program.session.AttemptedList.Add(newAttempt);//add to attempted list to show BAD attempts during a defined session;
                     }
                     if (current != null && current.Handle != foreground)
@@ -253,6 +260,18 @@ namespace Focus
         private void pastSessionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Sessions().Show();
+        }
+
+        private void endEarlyTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(Program.session != null)
+            {
+                Program.session.EndEarly();
+            }
+            else
+            {
+                MessageBox.Show("No session running right now");
+            }
         }
     }
 }

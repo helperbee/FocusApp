@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -20,15 +19,26 @@ namespace Focus
 
         private void Sessions_Load(object sender, EventArgs e)
         {
-            foreach(var x in Program.session.AttemptedList)
-            {
+
+            
+            for (var x = 0; x < Program.sessionStorage.Count; x++) { 
+                var session = Program.sessionStorage[x];
+                List<string> processNames = new List<string>();//this is reused logic, keep dry later
+                foreach (var inner in session.TargetList)
+                {
+                    if (!processNames.Contains(inner.ProcessName))
+                        processNames.Add(inner.ProcessName);                    
+                }
                 var item = new ListViewItem();
-                item.Text = x.WindowTitle;
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, x.At.ToShortTimeString()));
-                listView1.Items.Add(item);//could add range here
+                item.Text = session.Name;
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, string.Join(", ", processNames)));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, session.Minutes));
+                listView1.Items.Add(item);
             }
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Focus
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         ///  Required designer variable.
@@ -37,8 +37,9 @@
             this.focusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.pastSessionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.endEarlyTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,9 +83,10 @@
             this.focusToolStripMenuItem,
             this.refreshToolStripMenuItem,
             this.infoToolStripMenuItem,
-            this.pastSessionsToolStripMenuItem});
+            this.pastSessionsToolStripMenuItem,
+            this.endEarlyTestToolStripMenuItem});
             this.mainStrip.Name = "mainStrip";
-            this.mainStrip.Size = new System.Drawing.Size(181, 114);
+            this.mainStrip.Size = new System.Drawing.Size(181, 136);
             // 
             // focusToolStripMenuItem
             // 
@@ -107,20 +109,27 @@
             this.infoToolStripMenuItem.Text = "Info";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
+            // pastSessionsToolStripMenuItem
+            // 
+            this.pastSessionsToolStripMenuItem.Name = "pastSessionsToolStripMenuItem";
+            this.pastSessionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pastSessionsToolStripMenuItem.Text = "Sessions";
+            this.pastSessionsToolStripMenuItem.Click += new System.EventHandler(this.pastSessionsToolStripMenuItem_Click);
+            // 
             // imageList1
             // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // pastSessionsToolStripMenuItem
+            // endEarlyTestToolStripMenuItem
             // 
-            this.pastSessionsToolStripMenuItem.Name = "pastSessionsToolStripMenuItem";
-            this.pastSessionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.pastSessionsToolStripMenuItem.Text = "Past Sessions";
-            this.pastSessionsToolStripMenuItem.Click += new System.EventHandler(this.pastSessionsToolStripMenuItem_Click);
+            this.endEarlyTestToolStripMenuItem.Name = "endEarlyTestToolStripMenuItem";
+            this.endEarlyTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.endEarlyTestToolStripMenuItem.Text = "End Early Test";
+            this.endEarlyTestToolStripMenuItem.Click += new System.EventHandler(this.endEarlyTestToolStripMenuItem_Click);
             // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -128,7 +137,7 @@
             this.Controls.Add(this.processList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Focus Application";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -150,5 +159,6 @@
         private ToolStripMenuItem infoToolStripMenuItem;
         private ImageList imageList1;
         private ToolStripMenuItem pastSessionsToolStripMenuItem;
+        private ToolStripMenuItem endEarlyTestToolStripMenuItem;
     }
 }
