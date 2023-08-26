@@ -23,6 +23,7 @@ namespace Focus
         private ListViewColumnSorter lvwColumnSorter;
         private void Events_Load(object sender, EventArgs e)
         {
+            //
             this.listView1.ListViewItemSorter = lvwColumnSorter;
             foreach (Info info in _events)
             {
@@ -71,7 +72,7 @@ namespace Focus
                 StringBuilder toClipboard = new StringBuilder();
                 double totalSeconds = 0;
                 List<string> processNames = new List<string>();
-
+                //fix time adding..
                 foreach (Info info in _events)
                 {
                     totalSeconds += info.From.duration.TotalSeconds;
@@ -87,6 +88,11 @@ namespace Focus
                 Clipboard.SetDataObject(toClipboard.ToString());//Set to computer's clipboard
             }
         }
-        
+
+        private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            //toolStripStatusLabel1
+            toolStripStatusLabel1.Text = $"{listView1.SelectedItems.Count}";
+        }
     }
 }

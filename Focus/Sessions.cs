@@ -19,7 +19,7 @@ namespace Focus
 
         private void Sessions_Load(object sender, EventArgs e)
         {
-
+           
             
             for (var x = 0; x < Program.sessionStorage.Count; x++) { 
                 var session = Program.sessionStorage[x];
