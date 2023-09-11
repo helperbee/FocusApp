@@ -91,8 +91,24 @@ namespace Focus
 
         private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
+            StringBuilder toClipboard = new StringBuilder();
+            double totalSeconds = 0;
+            List<string> processNames = new List<string>();
+            //fix time adding..
+            foreach (Info info in _events)
+            {
+                totalSeconds += info.From.duration.TotalSeconds;
+                if (!processNames.Contains(info.From.ProcessName))
+                    processNames.Add(info.From.ProcessName);
+
+                //toClipboard.AppendLine(String.Format("{0}->{1} | {2}", info.From.ProcessName, info.To.ProcessName, info.From.duration.ToString(@"d\.hh\:mm\:ss")));                  
+            }
+            TimeSpan totalDuration = TimeSpan.FromSeconds(totalSeconds);
+            string formattedTotalDuration = string.Format("{0:D2}:{1:D2}:{2:D2}", totalDuration.Hours, totalDuration.Minutes, totalDuration.Seconds);
+
+            toClipboard.AppendLine(String.Format("Total Time Spent in {0} : {1}", string.Join(", ", processNames), formattedTotalDuration));
             //toolStripStatusLabel1
-            toolStripStatusLabel1.Text = $"{listView1.SelectedItems.Count}";
+            toolStripStatusLabel1.Text = $"{toClipboard.ToString()}";
         }
     }
 }

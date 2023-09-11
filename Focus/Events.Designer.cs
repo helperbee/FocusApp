@@ -52,6 +52,7 @@
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
+            this.listView1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.listView1.Size = new System.Drawing.Size(1414, 450);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
