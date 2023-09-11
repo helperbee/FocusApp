@@ -52,7 +52,7 @@
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.listView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.listView1.Size = new System.Drawing.Size(1414, 450);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -69,20 +69,24 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "Title";
+            this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader2.Width = 200;
             // 
             // columnHeader3
             // 
             this.columnHeader3.Text = "Next Process";
+            this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader3.Width = 130;
             // 
             // columnHeader4
             // 
             this.columnHeader4.Text = "Title";
+            this.columnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // columnHeader5
             // 
             this.columnHeader5.Text = "Time Spent";
+            this.columnHeader5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // statusStrip1
             // 
